@@ -58,25 +58,64 @@ function readFile(file) {
     });
 }
 
-// Parse CSV text to array of objects
+// Parse CSV text to array of objects with proper handling of quoted fields
 function parseCSV(csvText) {
     const lines = csvText.split('\n').filter(line => line.trim() !== '');
-    const headers = lines[0].split(',').map(header => header.trim());
+    if (lines.length === 0) return [];
+    
+    // Extract headers first
+    const headers = parseCSVLine(lines[0]);
     
     return lines.slice(1).map(line => {
-        const values = line.split(',').map(value => value.trim());
+        const values = parseCSVLine(line);
         const obj = {};
+        
         headers.forEach((header, i) => {
-            // Handle missing values (empty strings)
-            obj[header] = values[i] === '' ? null : values[i];
+            // Handle missing values (empty strings or undefined)
+            const value = i < values.length ? values[i] : null;
+            obj[header] = value === '' || value === null || value === undefined ? null : value;
             
             // Convert numerical values to numbers if possible
-            if (!isNaN(obj[header]) && obj[header] !== null) {
+            if (obj[header] !== null && !isNaN(obj[header])) {
                 obj[header] = parseFloat(obj[header]);
             }
         });
         return obj;
     });
+}
+
+// Parse a single CSV line, handling quoted fields with commas
+function parseCSVLine(line) {
+    const values = [];
+    let currentValue = '';
+    let inQuotes = false;
+    let quoteChar = '';
+    
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if ((char === '"' || char === "'") && !inQuotes) {
+            // Start of quoted field
+            inQuotes = true;
+            quoteChar = char;
+        } else if (char === quoteChar && inQuotes) {
+            // End of quoted field
+            inQuotes = false;
+            quoteChar = '';
+        } else if (char === ',' && !inQuotes) {
+            // End of field (not in quotes)
+            values.push(currentValue.trim());
+            currentValue = '';
+        } else {
+            // Regular character
+            currentValue += char;
+        }
+    }
+    
+    // Add the last field
+    values.push(currentValue.trim());
+    
+    return values;
 }
 
 // Inspect the loaded data
