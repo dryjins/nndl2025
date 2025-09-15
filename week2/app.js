@@ -659,11 +659,23 @@ function createPredictionTable(data) {
     // Create data rows
     data.forEach(row => {
         const tr = document.createElement('tr');
-        ['PassengerId', 'Survived', 'Probability'].forEach(key => {
-            const td = document.createElement('td');
-            td.textContent = key === 'Probability' ? row[key].toFixed(4) : row[key];
-            tr.appendChild(td);
-        });
+        
+        // Handle PassengerId
+        const tdId = document.createElement('td');
+        tdId.textContent = row.PassengerId;
+        tr.appendChild(tdId);
+        
+        // Handle Survived
+        const tdSurvived = document.createElement('td');
+        tdSurvived.textContent = row.Survived;
+        tr.appendChild(tdSurvived);
+        
+        // Handle Probability - ensure it's a number before calling toFixed
+        const tdProb = document.createElement('td');
+        const probValue = typeof row.Probability === 'number' ? row.Probability : parseFloat(row.Probability);
+        tdProb.textContent = !isNaN(probValue) ? probValue.toFixed(4) : 'N/A';
+        tr.appendChild(tdProb);
+        
         table.appendChild(tr);
     });
     
