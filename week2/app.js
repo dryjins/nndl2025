@@ -58,64 +58,25 @@ function readFile(file) {
     });
 }
 
-// Parse CSV text to array of objects with proper handling of quoted fields
+// Parse CSV text to array of objects
 function parseCSV(csvText) {
     const lines = csvText.split('\n').filter(line => line.trim() !== '');
-    if (lines.length === 0) return [];
-    
-    // Extract headers first
-    const headers = parseCSVLine(lines[0]);
+    const headers = lines[0].split(',').map(header => header.trim());
     
     return lines.slice(1).map(line => {
-        const values = parseCSVLine(line);
+        const values = line.split(',').map(value => value.trim());
         const obj = {};
-        
         headers.forEach((header, i) => {
-            // Handle missing values (empty strings or undefined)
-            const value = i < values.length ? values[i] : null;
-            obj[header] = value === '' || value === null || value === undefined ? null : value;
+            // Handle missing values (empty strings)
+            obj[header] = values[i] === '' ? null : values[i];
             
             // Convert numerical values to numbers if possible
-            if (obj[header] !== null && !isNaN(obj[header])) {
+            if (!isNaN(obj[header]) && obj[header] !== null) {
                 obj[header] = parseFloat(obj[header]);
             }
         });
         return obj;
     });
-}
-
-// Parse a single CSV line, handling quoted fields with commas
-function parseCSVLine(line) {
-    const values = [];
-    let currentValue = '';
-    let inQuotes = false;
-    let quoteChar = '';
-    
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        
-        if ((char === '"' || char === "'") && !inQuotes) {
-            // Start of quoted field
-            inQuotes = true;
-            quoteChar = char;
-        } else if (char === quoteChar && inQuotes) {
-            // End of quoted field
-            inQuotes = false;
-            quoteChar = '';
-        } else if (char === ',' && !inQuotes) {
-            // End of field (not in quotes)
-            values.push(currentValue.trim());
-            currentValue = '';
-        } else {
-            // Regular character
-            currentValue += char;
-        }
-    }
-    
-    // Add the last field
-    values.push(currentValue.trim());
-    
-    return values;
 }
 
 // Inspect the loaded data
@@ -659,23 +620,11 @@ function createPredictionTable(data) {
     // Create data rows
     data.forEach(row => {
         const tr = document.createElement('tr');
-        
-        // Handle PassengerId
-        const tdId = document.createElement('td');
-        tdId.textContent = row.PassengerId;
-        tr.appendChild(tdId);
-        
-        // Handle Survived
-        const tdSurvived = document.createElement('td');
-        tdSurvived.textContent = row.Survived;
-        tr.appendChild(tdSurvived);
-        
-        // Handle Probability - ensure it's a number before calling toFixed
-        const tdProb = document.createElement('td');
-        const probValue = typeof row.Probability === 'number' ? row.Probability : parseFloat(row.Probability);
-        tdProb.textContent = !isNaN(probValue) ? probValue.toFixed(4) : 'N/A';
-        tr.appendChild(tdProb);
-        
+        ['PassengerId', 'Survived', 'Probability'].forEach(key => {
+            const td = document.createElement('td');
+            td.textContent = key === 'Probability' ? row[key].toFixed(4) : row[key];
+            tr.appendChild(td);
+        });
         table.appendChild(tr);
     });
     
