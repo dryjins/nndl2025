@@ -1,6 +1,6 @@
 **Prompt**
 
-Output two separate code files: first index.html (for HTML structure and UI), second app.js (for JavaScript logic). The app is a shallow binary classifier on Kaggle Titanic dataset using TensorFlow.js, running entirely in the browser (no server), ready for GitHub Pages. Use TensorFlow.js CDN 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest' and tfjs-vis CDN 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@latest'. Link app.js from index.html via <script src="app.js"></script>. Follow this workflow:
+Output two separate code files: first index.html (for HTML structure and UI), second app.js (for JavaScript logic). The app is a shallow binary classifier on Kaggle Titanic dataset using TensorFlow.js, running entirely in the browser (no server), ready for GitHub Pages. Use TensorFlow.js CDN 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest' and tfjs-vis CDN 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@latest'. Link app.js from index.html. Follow this workflow:
 
 1. **Layout in index.html**: Sections for Data Load, Preprocessing, Model, Training, Metrics (ROC-AUC slider), Prediction, Export. Add file inputs for train.csv/test.csv. Use basic CSS for responsiveness.
 
