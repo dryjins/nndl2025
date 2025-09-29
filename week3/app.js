@@ -328,7 +328,10 @@ class MNISTApp {
         const container = document.getElementById('previewContainer');
         container.innerHTML = '';
         
-        images.arraySync().forEach((image, i) => {
+        // Convert tensor to array for processing
+        const imageArray = images.arraySync();
+        
+        imageArray.forEach((image, i) => {
             const item = document.createElement('div');
             item.className = 'preview-item';
             
