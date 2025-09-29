@@ -118,4 +118,6 @@ Formatting:
 
 -   Produce only three fenced code blocks labeled exactly “index.html”, “data-loader.js”, and “app.js”.
     
--   Browser‑only JavaScript; no Node or extra libraries; clear English comments; no text outside the code blocks.  
+-   Browser‑only JavaScript; no Node or extra libraries; clear English comments; no text outside the code blocks.
+
+-   Provide very detail and intuitive comments as explanation for important code blocks.
