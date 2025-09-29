@@ -82,13 +82,13 @@ class MNISTDataLoader {
     // Get random batch for preview
     getRandomTestBatch(xs, ys, k = 5) {
         return tf.tidy(() => {
-            const indices = tf.util.createShuffledIndices(xs.shape[0]);
-            const selectedIndices = indices.slice(0, k);
+            const shuffledIndices = tf.util.createShuffledIndices(xs.shape[0]);
+            const selectedIndices = Array.from(shuffledIndices.slice(0, k));
             
             const batchXs = tf.gather(xs, selectedIndices);
             const batchYs = tf.gather(ys, selectedIndices);
             
-            return { batchXs, batchYs, indices: Array.from(selectedIndices) };
+            return { batchXs, batchYs, indices: selectedIndices };
         });
     }
 
