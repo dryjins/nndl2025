@@ -33,5 +33,5 @@ Instruction:
 - Designed for direct deployment on GitHub Pages (no server or Python backend).
 
 Format:
-- Output three code blocks labeled exactly as: data-loader.js, gru.js, app.js (no index.html).
+- Output three code blocks labeled exactly as: data-loader.js, gru.js, app.js along with index.html.
 - No explanations, only code inside the code blocks.
