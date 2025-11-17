@@ -45,18 +45,28 @@ async function setupCamera() {
 async function loadModel() {
     try {
         console.log('Loading model...');
-        model = await tf.loadGraphModel(MODEL_PATH);
+        
+        // Use `loadLayersModel` for models converted from Keras.
+        // This is the correct function that matches our model format.
+        model = await tf.loadLayersModel(MODEL_PATH);
+        
         console.log('Model loaded successfully');
         
-        // Warm up the model with a dummy tensor
+        // Warm up the model (this is good practice!)
         const warmUpTensor = tf.zeros([1, 224, 224, 3]);
-        model.predict(warmUpTensor);
+        const prediction = model.predict(warmUpTensor);
+        prediction.dispose(); // Also dispose the warmup prediction
         warmUpTensor.dispose();
         
+        console.log('Model warmed up.');
         return model;
+
     } catch (error) {
         console.error('Error loading model:', error);
-        classNameElement.textContent = 'Error loading model';
+        // Display the error to the user if an element exists
+        if (classNameElement) {
+            classNameElement.textContent = 'Error loading model';
+        }
         throw error;
     }
 }
