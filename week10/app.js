@@ -45,7 +45,7 @@ async function setupCamera() {
 async function loadModel() {
     try {
         console.log('Loading model...');
-        model = await tf.loadLayersModel(MODEL_PATH);
+        model = await tf.loadGraphModel(MODEL_PATH);
         console.log('Model loaded successfully');
         
         // Warm up the model with a dummy tensor
