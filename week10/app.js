@@ -48,7 +48,7 @@ async function loadModel() {
         
         // Use `loadLayersModel` for models converted from Keras.
         // This is the correct function that matches our model format.
-        model = await tf.loadLayersModel(MODEL_PATH);
+        model = await tf.loadGraphModel(MODEL_PATH);
         
         console.log('Model loaded successfully');
         
