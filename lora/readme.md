@@ -102,7 +102,7 @@ If the style diversity becomes unrealistic, the model may spend capacity learnin
 
 ***
 
-## Suggested Classroom Comparison
+## Suggested Comparison
 
 A useful lab design is to keep the classifier, split, and metrics fixed, and change only the synthetic data generation policy.
 
@@ -112,11 +112,3 @@ A useful lab design is to keep the classifier, split, and metrics fixed, and cha
 | Class-balanced augmentation | Label-specific data volume | Better support for weak classes | Artificial skew |
 | Hard-example generation | Boundary difficulty | Sharper class separation | Label ambiguity |
 | Style-diverse generation | User expression style | Better robustness | Unrealistic noise |
-
-## Recommended Teaching Framing
-
-One clean way to teach this topic is to ask students a single controlled question:
-
-> If the model and evaluation pipeline stay fixed, which synthetic data generation policy improves intent classification most effectively?
-
-This framing keeps the experiment interpretable. It also helps students see that synthetic data is not a magic quantity problem; it is a data-design problem.
